@@ -1,9 +1,17 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+	h1= title
+	p Welcome to #{title}
+	a(href="http://www.google.com", rel="external") Google
+	div(class='sf')
+		select(class='styled')
+			option value1
+			option value2
+	div(class='sf')
+		select(class='styled')
+			option value3
+			option value4
 
 block footer
-  footer
-    p copyright &copy; 2012
+	footer copyright &copy; 2012
