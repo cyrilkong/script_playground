@@ -4,14 +4,27 @@ block content
 	h1= title
 	p Welcome to #{title}
 	a(href="http://www.google.com", rel="external") Google
-	div(class='sf')
-		select(class='styled')
+	div.sf
+		select.styled
 			option value1
 			option value2
-	div(class='sf')
+	div.sf
 		select(class='styled')
 			option value3
 			option value4
+	div.sf
+		input(type="email", placeholder="text me here...")
+	div.sf
+		input(type="password", placeholder="password me here...")
+	div.main
+		div.comeone
+			p column1
+		div.comeone
+			p column2
+		div.comeone
+			p column3
+		div.comeone
+			p column4
 
 block footer
 	footer copyright &copy; 2012

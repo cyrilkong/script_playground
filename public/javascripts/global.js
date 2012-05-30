@@ -7,11 +7,12 @@
   $dom = $(document);
 
   $dom.ready(function() {
-    var deviceAgent, docBody, external_link_Fx, isFirefox, isIE7, isIE8, isMobile, isSafari, isWebkit, placeholder_init, styled_select_Fx;
+    var deviceAgent, docBody, external_link_Fx, isFirefox, isIE, isIE7, isIE8, isMobile, isSafari, isWebkit, placeholder_init, styled_select_Fx;
     isFirefox = $.browser.mozilla;
     isSafari = $.browser.safari;
     isWebkit = $.browser.webkit;
     docBody = isWebkit ? 'body' : 'html';
+    isIE = $.browser.msie;
     isIE7 = $.browser.msie && $.browser.version === 7.0;
     isIE8 = $.browser.msie && $.browser.version === 8.0;
     deviceAgent = navigator.userAgent.toLowerCase();
@@ -32,96 +33,112 @@
       });
     };
     $.fn.placeholder = function(o) {
-      var cur_value, defaults, options, placeholder_val, pw_holder, should_value, testinput;
+      var defaults, options, testinput;
       defaults = {
         placeholderClass: 'placeholder'
       };
       options = $.extend(defaults, o);
       testinput = doc.createElement('input');
       $.extend($.support, {
-        placeholder: !!('placeholder' in testinput)
+        placeholder: 'placeholder' in testinput
       });
+      if ($.support.placeholder) {
+        $('input[placeholder]').css({
+          fontFamily: '"Segoe UI", sans-serif'
+        });
+        return false;
+      }
       $(this).each(function() {
-        if ($.support.placeholder) {
-          return false;
+        var cur_value, placeholder_val, pw_holder, should_value;
+        should_value = $(this).attr('placeholder');
+        cur_value = $(this).val();
+        $(this).attr('autocomplete', 'off');
+        if (cur_value === '') {
+          $(this).addClass(options.placeholderClass);
+          $(this).val(should_value);
         }
-      });
-      should_value = $(this).attr('placeholder');
-      cur_value = $(this).attr('value');
-      $(this).attr('autocomplete', 'off');
-      if (should_value === cur_value) {
-        $(this).addClass(options.placeholderClass);
-      }
-      if (cur_value === '') {
-        $(this).addClass(options.placeholderClass);
-        $(this).val(should_value);
-      }
-      if ($(this).attr('type' === 'password')) {
-        placeholder_val = $(this).attr('placeholder');
-        pw_holder = $('<span />', {
-          text: placeholder_val,
-          'class': options.placeholderClass,
-          css: {
-            position: 'aboslute',
-            fontFamily: '"Segoe UI", sans-serif',
-            background: 'transparent',
-            cursor: 'text',
-            border: 'none',
-            top: $(this).position().top,
-            left: $(this).position().left,
-            lineHeight: $(this).height() + 3 + 'px',
-            paddingLeft: parseFloat($(this).css('paddingLeft' + 2 + 'px'))
-          }
-        }).insertAfter(this);
-        $(this).val('').addClass(options.placeholderClass);
-        pw_holder.click(function() {
-          pw_holder.hide();
-          $(this).prev('input[type="password"]').focus().addClass('typing').removeClass('placeholder');
-        });
-        $(this).focusin(function() {
-          if ($(this).hasClass(options.placeholderClass)) {
+        if ($(this).attr('type') === 'password') {
+          placeholder_val = $(this).attr('placeholder');
+          pw_holder = $('<span />', {
+            text: placeholder_val,
+            'class': 'pw_' + options.placeholderClass,
+            css: {
+              fontSize: $(this).css('font-size'),
+              color: '#6D6D6D',
+              position: 'absolute',
+              fontFamily: '"Segoe UI", sans-serif',
+              background: 'transparent',
+              cursor: 'text',
+              border: '0',
+              top: $(this).position().top,
+              left: $(this).position().left,
+              lineHeight: parseFloat($(this).height()) + 'px',
+              height: parseFloat($(this).height()) + 'px',
+              margin: '2px',
+              padding: '1px',
+              paddingLeft: $(this).css('padding-left') + 2 + 'px'
+            }
+          }).insertAfter(this);
+          $(this).val('').addClass(options.placeholderClass);
+          pw_holder.click(function() {
             pw_holder.hide();
+            $(this).prev('input[type="password"]').focus().addClass('typing').removeClass(options.placeholderClass);
+          });
+          $(this).focusin(function() {
+            if ($(this).hasClass(options.placeholderClass)) {
+              pw_holder.hide();
+              $(this).removeClass(options.placeholderClass);
+            }
+          });
+          $(this).focusout(function() {
+            if ($(this).val() === '') {
+              pw_holder.show();
+              $(this).val('').addClass(options.placeholderClass);
+            }
+          });
+        }
+        if ($(this).attr('type') !== 'password') {
+          placeholder_val = $(this).attr('placeholder');
+          $(this).css({
+            color: '#6D6D6D',
+            fontFamily: '"Segoe UI", sans-serif',
+            fontSize: $(this).css('font-size')
+          });
+          $(this).focusin(function() {
+            $(this).css('color', '#000');
             $(this).removeClass(options.placeholderClass);
-          }
-        });
-        $(this).focusout(function() {
-          if ($(this).val() === '') {
-            pw_holder.show();
-            $(this).val('').addClass(options.placeholderClass);
-          }
-        });
-      }
-      if ($(this).attr('type' !== 'password')) {
-        $(this).focusin(function() {
-          placeholder_val = $(this).attr('placeholder');
-          $(this).removeClass(options.placeholderClass);
-          if (placeholder_val === $(this).val()) {
-            $(this).val(placeholder_val).removeClass(options.placeholderClass);
-          }
-        });
-        $(this).focusout(function() {
-          placeholder_val = $(this).attr('placeholder');
-          $(this).removeClass(options.placeholderClass);
-          if ($(this).val() !== '' && !placeholder_val) {
-            $(this).val(placeholder_val).removeClass(optoins.placeholderClass);
-          }
-          if ($(this).val() === placeholder_val) {
-            $(this).addClass(options.placeholderClass);
-          }
-        });
-      }
-      return $(this).parents('form').submit(function() {
-        $(this).find('[placeholder]').each(function() {
-          var input;
-          input = $(this);
-          if (input.val() === input.attr('placeholder')) {
-            input.val('');
-          }
+            if ($(this).val() === placeholder_val) {
+              $(this).val('').removeClass(options.placeholderClass);
+            }
+          });
+          $(this).focusout(function() {
+            if ($(this).val() === placeholder_val) {
+              $(this).css('color', '#6D6D6D');
+              $(this).addClass(options.placeholderClass);
+            } else if ($(this).val() === '') {
+              $(this).val(placeholder_val).removeClass(options.placeholderClass);
+              $(this).css('color', '#6D6D6D');
+            } else {
+              $(this).css('color', '#000');
+            }
+          });
+        }
+        $(this).parents('form').submit(function() {
+          $(this).find('[placeholder]').each(function() {
+            var input;
+            input = $(this);
+            if (input.val() === input.attr('placeholder')) {
+              input.val('');
+            }
+          });
         });
       });
     };
     placeholder_init = (function() {
-      $('.placeholder', '[placeholder]').each(function() {
+      if (!$dom.find('input').length) {
+        return false;
+      }
+      $('input.placeholder, input[placeholder]').each(function() {
         var $input;
         $input = $(this);
         $input.focusin(function() {
@@ -149,8 +166,8 @@
           border: '1px solid transparent',
           margin: ma
         });
-        ot = $(this).offset().top - 2;
-        ol = $(this).offset().left - 2;
+        ot = isWebkit ? $(this).offset().top - 2 : $(this).offset().top;
+        ol = isWebkit ? $(this).offset().left - 2 : $(this).offset().left;
         if ($('option:selected', this).val() !== '') {
           select_title = $('option:selected', this).text();
           $(this).width($(this).width() + 20);

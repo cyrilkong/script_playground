@@ -7,13 +7,14 @@ $dom.ready ->
 	isSafari = $.browser.safari
 	isWebkit = $.browser.webkit
 	docBody = if isWebkit then 'body' else 'html'
+	isIE = $.browser.msie
 	isIE7 = $.browser.msie and $.browser.version is 7.0
 	isIE8 = $.browser.msie and $.browser.version is 8.0
 	deviceAgent = navigator.userAgent.toLowerCase()
 	isMobile = deviceAgent.match /(iphone|ipod|ipad|android)/ isnt null
 
 	# eqHeight()
-	$.fn.eqHeight = (minH, maxH)->
+	$.fn.eqHeight = (minH, maxH) ->
 		tallest = if minH then maxH else 0
 		@.each ->
 			tallest = $(@).height() if $(@).height() > tallest
@@ -29,83 +30,104 @@ $dom.ready ->
 		defaults = 
 			placeholderClass : 'placeholder'
 		options = $.extend(defaults, o)
+		
+		# check placeholder
 		testinput = doc.createElement 'input'
-		$.extend $.support,	placeholder : !!('placeholder' of testinput)
+		$.extend $.support,
+			placeholder : 'placeholder' of testinput
 		# stop it if can native support placeholder
+		if $.support.placeholder
+			$('input[placeholder]').css
+				fontFamily: '"Segoe UI", sans-serif'
+			return false
 		$(@).each ->
-			return false if $.support.placeholder
+			should_value = $(@).attr 'placeholder'
+			cur_value = $(@).val()
+			$(@).attr 'autocomplete', 'off'
 
-		should_value = $(@).attr 'placeholder'
-		cur_value = $(@).attr 'value'
-		$(@).attr 'autocomplete', 'off'
-		$(@).addClass options.placeholderClass if should_value is cur_value
+			if cur_value is ''
+				$(@).addClass options.placeholderClass
+				$(@).val should_value
 
-		if cur_value is ''
-			$(@).addClass options.placeholderClass
-			$(@).val should_value
-
-		# placeholder for input type password
-		if $(@).attr 'type' is 'password'
-			placeholder_val = $(@).attr 'placeholder'
-			pw_holder = $('<span />',
-				text: placeholder_val,
-				'class': options.placeholderClass,
-				css:
-					position: 'aboslute'
-					fontFamily: '"Segoe UI", sans-serif'
-					background: 'transparent'
-					cursor: 'text'
-					border: 'none'
-					top: $(@).position().top
-					left: $(@).position().left
-					lineHeight: $(@).height() + 3 +'px'
-					paddingLeft: parseFloat $(@).css 'paddingLeft' + 2 +'px'
-			).insertAfter(@)
-
-			$(@).val('').addClass options.placeholderClass
-
-			# placeholder password holder
-			pw_holder.click ->
-				pw_holder.hide()
-				$(@).prev('input[type="password"]').focus().addClass('typing').removeClass 'placeholder'
-				return
-			$(@).focusin ->
-				if $(@).hasClass options.placeholderClass
-					pw_holder.hide()
-					$(@).removeClass options.placeholderClass
-				return
-			$(@).focusout ->
-				if $(@).val() is ''
-					pw_holder.show()
-					$(@).val('').addClass options.placeholderClass
-				return
-
-		# placeholder for input type text
-		if $(@).attr 'type' isnt 'password'
-			$(@).focusin ->
+			# placeholder for input type password
+			if $(@).attr('type') is 'password'
 				placeholder_val = $(@).attr 'placeholder'
-				$(@).removeClass options.placeholderClass
-				$(@).val(placeholder_val).removeClass options.placeholderClass if placeholder_val is $(@).val()
-				return
-			$(@).focusout ->
-				placeholder_val = $(this).attr 'placeholder'
-				$(this).removeClass options.placeholderClass
-				$(@).val(placeholder_val).removeClass optoins.placeholderClass if $(@).val() isnt '' and not placeholder_val
-				$(@).addClass options.placeholderClass if $(@).val() is placeholder_val
-				return
+				pw_holder = $('<span />',
+					text: placeholder_val,
+					'class': 'pw_' + options.placeholderClass,
+					css:
+						fontSize: $(@).css 'font-size'
+						color: '#6D6D6D'
+						position: 'absolute'
+						fontFamily: '"Segoe UI", sans-serif'
+						background: 'transparent'
+						cursor: 'text'
+						border: '0'
+						top: $(@).position().top
+						left: $(@).position().left
+						lineHeight: parseFloat($(@).height()) + 'px'
+						height: parseFloat($(@).height()) + 'px'
+						margin: '2px'
+						padding: '1px'
+						paddingLeft: $(@).css('padding-left') + 2 + 'px'
+				).insertAfter(@)
 
-		# placeholder for input end, form submit handler
-		$(@).parents('form').submit ->
-			$(@).find('[placeholder]').each ->
-				input = $(@)
-				input.val('') if input.val() is input.attr 'placeholder'
+				$(@).val('').addClass options.placeholderClass
+
+				# placeholder password holder
+				pw_holder.click ->
+					pw_holder.hide()
+					$(@).prev('input[type="password"]').focus().addClass('typing').removeClass options.placeholderClass
+					return
+				$(@).focusin ->
+					if $(@).hasClass options.placeholderClass
+						pw_holder.hide()
+						$(@).removeClass options.placeholderClass
+					return
+				$(@).focusout ->
+					if $(@).val() is ''
+						pw_holder.show()
+						$(@).val('').addClass options.placeholderClass
+					return
+
+			# placeholder for input type text
+			if $(@).attr('type') isnt 'password'
+				placeholder_val = $(@).attr 'placeholder'
+				$(@).css 
+					color: '#6D6D6D'
+					fontFamily: '"Segoe UI", sans-serif'
+					fontSize: $(@).css 'font-size'
+				$(@).focusin ->
+					$(@).css 'color', '#000'
+					$(@).removeClass options.placeholderClass
+					$(@).val('').removeClass options.placeholderClass if $(@).val() is placeholder_val
+					return
+				$(@).focusout ->
+					if $(@).val() is placeholder_val
+						$(@).css 'color', '#6D6D6D'
+						$(@).addClass options.placeholderClass
+					else if $(@).val() is ''
+						$(@).val(placeholder_val).removeClass options.placeholderClass
+						$(@).css 'color', '#6D6D6D'
+					else
+						$(@).css 'color', '#000' 
+					return
+
+			# placeholder for input end, form submit handler
+			$(@).parents('form').submit ->
+				$(@).find('[placeholder]').each ->
+					input = $(@)
+					input.val('') if input.val() is input.attr 'placeholder'
+					return
 				return
 			return
+		return
 	# placeholder() end
 
 	# placeholder_init()
 	placeholder_init = do ->
-		$('.placeholder', '[placeholder]').each ->
+		return false if not $dom.find('input').length
+		$('input.placeholder, input[placeholder]').each ->
 			$input = $(@)
 			$input.focusin ->
 				$(@).addClass 'typing'
@@ -136,8 +158,8 @@ $dom.ready ->
 			$(@).css
 				border: '1px solid transparent'
 				margin: ma
-			ot = $(@).offset().top - 2
-			ol = $(@).offset().left - 2
+			ot = if isWebkit then $(@).offset().top - 2 else $(@).offset().top
+			ol = if isWebkit then $(@).offset().left - 2 else $(@).offset().left
 			if $('option:selected', @).val() isnt ''
 				select_title = $('option:selected', @).text()
 				$(@).width $(@).width() + 20
