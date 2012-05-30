@@ -3,28 +3,40 @@ extends layout
 block content
 	h1= title
 	p Welcome to #{title}
-	a(href="http://www.google.com", rel="external") Google
-	div.sf
-		select.styled
-			option value1
-			option value2
-	div.sf
-		select(class='styled')
-			option value3
-			option value4
-	div.sf
-		input(type="email", placeholder="text me here...")
-	div.sf
-		input(type="password", placeholder="password me here...")
-	div.main
-		div.comeone
-			p column1
-		div.comeone
-			p column2
-		div.comeone
-			p column3
-		div.comeone
-			p column4
-
+	form#form_testing(action="#")
+		fieldset
+			legend Testing external links		
+			a(href="http://www.google.com", rel="external") Google
+		fieldset
+			legend Testing fakeInput styled select
+			div.sf
+				select.styled
+					option value1
+					option value2
+			div.sf
+				select.styled
+					option value3
+					option value4
+		fieldset
+			legend Testing placeholder * impacts IE only
+			div.sf
+				input(name="useremail", type="email", placeholder="text me here...", required="true")
+			div.sf
+				input(name="pwd", type="password", placeholder="password me here...")
+			div.sf
+				input#btn_submit(type="submit", name="submit", value="submit")
+			div.contn
+				p#result_show
+		fieldset
+			legend Testing columns
+			div.main
+				div.comeone
+					p column1
+				div.comeone
+					p column2
+				div.comeone
+					p column3
+				div.comeone
+					p column4
 block footer
 	footer copyright &copy; 2012

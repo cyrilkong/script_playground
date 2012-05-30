@@ -1,7 +1,5 @@
-doc = document
-$dom = $(document)
 # dom ready()
-$dom.ready ->
+$(document).ready (dom) ->
 	# device/browser detection
 	isFirefox = $.browser.mozilla
 	isSafari = $.browser.safari
@@ -32,7 +30,7 @@ $dom.ready ->
 		options = $.extend(defaults, o)
 		
 		# check placeholder
-		testinput = doc.createElement 'input'
+		testinput = document.createElement('input')
 		$.extend $.support,
 			placeholder : 'placeholder' of testinput
 		# stop it if can native support placeholder
@@ -126,7 +124,7 @@ $dom.ready ->
 
 	# placeholder_init()
 	placeholder_init = do ->
-		return false if not $dom.find('input').length
+		return false if not dom.find('input').length
 		$('input.placeholder, input[placeholder]').each ->
 			$input = $(@)
 			$input.focusin ->
@@ -150,7 +148,7 @@ $dom.ready ->
 	# styled_select_Fx()
 	styled_select_Fx = do ->
 		# stop if dom is no select
-		return false if not $dom.find('select').length
+		return false if not dom.find('select').length
 
 		$('select.styled').each ->
 			select_title = $(@).attr 'title'
