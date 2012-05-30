@@ -1,26 +1,30 @@
-!!! 5
+doctype html
 html
     head
         title= title
         link(rel='stylesheet', href='/stylesheets/base.css')
         link(rel='stylesheet', href='/stylesheets/style.css')
-        script(type='text/javascript', src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js')
-        script(type='text/javascript', src='/javascripts/global.min.js')
+        script(type='text/javascript', src='/javascripts/head.min.js')
+        script
+            head.js('https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js',
+                    '/javascripts/global.min.js')
     body
         block content
         block footer
         script
-            function form_test(event) {
-                var data = $('#form_testing').serialize();
-                data = decodeURIComponent(data);
-                console.log(data);
-                return data;
-            }
-            $(document).ready(function(){
+            head.ready(function() {
+                function form_test(event) {
+                    var data = $('#form_testing').serialize();
+                    data = decodeURIComponent(data);
+                    console.log(data);
+                    return data;
+                }
+                
                 //- console.log('jQuery ready');
                 $('#form_testing').submit(function(event) {
                     event.preventDefault();
                     form_test();
                     
                 });
-            });
+            
+            })
