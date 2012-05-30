@@ -192,13 +192,6 @@ $(document).ready (dom) ->
 			return
 		return
 	# styled_select_Fx() end
-
-	# function animate() fix
-	$.fn.extend
-		_animate: $.fn.animate,
-		animate: (prop, speed, callback, easing) ->
-			@.is(':animated') || @._animate prop, speed, callback, easing
-	# function animate() fix end
 	
 	return
 	# dom functions end
