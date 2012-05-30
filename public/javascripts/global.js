@@ -198,6 +198,12 @@
         });
       });
     })();
+    $.extend({
+      _animate: $.fn.animate,
+      animate: function(prop, speed, callback, easing) {
+        return this.is(':animated') || this._animate(prop, speed, callback, easing);
+      }
+    });
   });
 
 }).call(this);
