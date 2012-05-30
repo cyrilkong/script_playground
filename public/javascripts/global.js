@@ -161,8 +161,8 @@
           border: '1px solid transparent',
           margin: ma
         });
-        ot = isWebkit ? $(this).offset().top - 2 : $(this).offset().top;
-        ol = isWebkit ? $(this).offset().left - 2 : $(this).offset().left;
+        ot = isWebkit ? $(this).position().top : $(this).position().top;
+        ol = isWebkit ? $(this).position().left : $(this).position().left;
         if ($('option:selected', this).val() !== '') {
           select_title = $('option:selected', this).text();
           $(this).width($(this).width() + 20);

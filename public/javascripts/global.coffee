@@ -156,8 +156,8 @@ $(document).ready (dom) ->
 			$(@).css
 				border: '1px solid transparent'
 				margin: ma
-			ot = if isWebkit then $(@).offset().top - 2 else $(@).offset().top
-			ol = if isWebkit then $(@).offset().left - 2 else $(@).offset().left
+			ot = if isWebkit then $(@).position().top else $(@).position().top
+			ol = if isWebkit then $(@).position().left else $(@).position().left
 			if $('option:selected', @).val() isnt ''
 				select_title = $('option:selected', @).text()
 				$(@).width $(@).width() + 20
