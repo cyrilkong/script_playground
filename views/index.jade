@@ -10,13 +10,13 @@ block content
 		fieldset
 			legend Testing fakeInput styled select
 			div.sf
-				select.styled
-					option value1
-					option value2
+				select.styled(name="selected1")
+					option(value="v1") value1
+					option(value="v2") value2
 			div.sf
-				select.styled
-					option value3
-					option value4
+				select.styled(name="selected2")
+					option(value="v3") value3
+					option(value="v4") value4
 		fieldset
 			legend Testing placeholder * impacts IE only
 			div.sf
