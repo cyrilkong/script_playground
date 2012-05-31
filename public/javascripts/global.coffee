@@ -148,9 +148,11 @@ $(document).ready (dom) ->
 	# styled_select_Fx()
 	styled_select_Fx = do ->
 		# stop if dom is no select
+		$select = $('select.styled')
 		return false if not dom.find('select').length
-
-		$('select.styled').each ->
+		# action styling
+		$.fn.do_ele_style = ->
+			
 			select_title = $(@).attr 'title'
 			ma = if $(@).css('margin') isnt 'undefined' then $(@).css('margin') else 0
 			$(@).css
@@ -189,6 +191,20 @@ $(document).ready (dom) ->
 				lineHeight: h+'px'
 				display: 'block'
 				margin: ma
+			
+			return
+		# check if element no height
+		check_ele_first = do ->
+			$select.each ->
+				flag = false
+				if $(@).filter ':visible'
+					flag = true
+					$(@).height 'auto' if $(@).height() is 0
+					if $(@).siblings('span.select').length
+						$(@).siblings('span.select').height 'auto'
+						$(@).siblings('span.select').width 'auto'
+				$(@).do_ele_style() if flag
+				return 
 			return
 		return
 	# styled_select_Fx() end

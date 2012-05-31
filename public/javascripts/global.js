@@ -150,10 +150,12 @@
       });
     })();
     styled_select_Fx = (function() {
+      var $select, check_ele_first;
+      $select = $('select.styled');
       if (!dom.find('select').length) {
         return false;
       }
-      $('select.styled').each(function() {
+      $.fn.do_ele_style = function() {
         var h, ma, ol, ot, select_title, w;
         select_title = $(this).attr('title');
         ma = $(this).css('margin') !== 'undefined' ? $(this).css('margin') : 0;
@@ -200,7 +202,26 @@
           display: 'block',
           margin: ma
         });
-      });
+      };
+      check_ele_first = (function() {
+        $select.each(function() {
+          var flag;
+          flag = false;
+          if ($(this).filter(':visible')) {
+            flag = true;
+            if ($(this).height() === 0) {
+              $(this).height('auto');
+            }
+            if ($(this).siblings('span.select').length) {
+              $(this).siblings('span.select').height('auto');
+              $(this).siblings('span.select').width('auto');
+            }
+          }
+          if (flag) {
+            $(this).do_ele_style();
+          }
+        });
+      })();
     })();
   });
 
