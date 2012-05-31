@@ -207,15 +207,8 @@
         $select.each(function() {
           var flag;
           flag = false;
-          if ($(this).filter(':visible')) {
+          if ($(this).is(':visible')) {
             flag = true;
-            if ($(this).height() === 0) {
-              $(this).height('auto');
-            }
-            if ($(this).siblings('span.select').length) {
-              $(this).siblings('span.select').height('auto');
-              $(this).siblings('span.select').width('auto');
-            }
           }
           if (flag) {
             $(this).do_ele_style();

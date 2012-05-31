@@ -197,12 +197,8 @@ $(document).ready (dom) ->
 		check_ele_first = do ->
 			$select.each ->
 				flag = false
-				if $(@).filter ':visible'
+				if $(@).is ':visible'
 					flag = true
-					$(@).height 'auto' if $(@).height() is 0
-					if $(@).siblings('span.select').length
-						$(@).siblings('span.select').height 'auto'
-						$(@).siblings('span.select').width 'auto'
 				$(@).do_ele_style() if flag
 				return 
 			return
