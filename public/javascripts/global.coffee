@@ -160,7 +160,7 @@ $(document).ready (dom) ->
 			ol = if isWebkit then $(@).position().left else $(@).position().left
 			if $('option:selected', @).val() isnt ''
 				select_title = $('option:selected', @).text()
-				$(@).width $(@).width() + 20
+				if isIE8 then $(@).width 'auto' else $(@).width $(@).width() + 20
 			h = $(@).height()
 			w = $(@).width()
 			$(@).css

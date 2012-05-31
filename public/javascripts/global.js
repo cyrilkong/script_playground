@@ -165,7 +165,11 @@
         ol = isWebkit ? $(this).position().left : $(this).position().left;
         if ($('option:selected', this).val() !== '') {
           select_title = $('option:selected', this).text();
-          $(this).width($(this).width() + 20);
+          if (isIE8) {
+            $(this).width('auto');
+          } else {
+            $(this).width($(this).width() + 20);
+          }
         }
         h = $(this).height();
         w = $(this).width();
