@@ -5,7 +5,8 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , http = require('http');
+  , http = require('http')
+  , io = require('socket.io');
 
 var app = express();
 
