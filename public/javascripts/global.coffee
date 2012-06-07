@@ -174,11 +174,12 @@ $(document).ready (dom) ->
 			.change ->
 				select_css = $('option:selected', @).attr 'class'
 				val = $('option:selected', @).text()
-				$(@).next('span.select').text val
+				fakeSelect = $(@).next('span.select')
+				fakeSelect.text val
 				if select_css is 'submitted'
-					$(@).next('span.select').addClass 'submitted'
+					fakeSelect.addClass 'submitted'
 				else
-					$(@).next('span.select').removeClass 'submitted'
+					fakeSelect.removeClass 'submitted'
 				$(@).attr('title',val)
 				return
 			.next('span.select').css
@@ -191,7 +192,12 @@ $(document).ready (dom) ->
 				lineHeight: h+'px'
 				display: 'block'
 				margin: ma
-			
+			selected_check = $('option:selected', @).attr 'class'
+			fakeSelect = $(@).next('span.select')
+			if selected_check is 'submitted' and fakeSelect.length
+				fakeSelect.addClass 'submitted'
+			else if selected_check isnt 'submitted' and fakeSelect.length
+				fakeSelect.removeClass 'submitted'
 			return
 		# check if element no height
 		check_ele_first = do ->

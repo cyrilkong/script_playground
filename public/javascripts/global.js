@@ -156,7 +156,7 @@
         return false;
       }
       $.fn.do_ele_style = function() {
-        var h, ma, ol, ot, select_title, w;
+        var fakeSelect, h, ma, ol, ot, select_title, selected_check, w;
         select_title = $(this).attr('title');
         ma = $(this).css('margin') !== 'undefined' ? $(this).css('margin') : 0;
         $(this).css({
@@ -181,14 +181,15 @@
           opacity: 0,
           '-khtml-apperance': 'none'
         }).after('<span class="select fakeSelect">' + select_title + '</span>').change(function() {
-          var select_css, val;
+          var fakeSelect, select_css, val;
           select_css = $('option:selected', this).attr('class');
           val = $('option:selected', this).text();
-          $(this).next('span.select').text(val);
+          fakeSelect = $(this).next('span.select');
+          fakeSelect.text(val);
           if (select_css === 'submitted') {
-            $(this).next('span.select').addClass('submitted');
+            fakeSelect.addClass('submitted');
           } else {
-            $(this).next('span.select').removeClass('submitted');
+            fakeSelect.removeClass('submitted');
           }
           $(this).attr('title', val);
         }).next('span.select').css({
@@ -202,6 +203,13 @@
           display: 'block',
           margin: ma
         });
+        selected_check = $('option:selected', this).attr('class');
+        fakeSelect = $(this).next('span.select');
+        if (selected_check === 'submitted' && fakeSelect.length) {
+          fakeSelect.addClass('submitted');
+        } else if (selected_check !== 'submitted' && fakeSelect.length) {
+          fakeSelect.removeClass('submitted');
+        }
       };
       check_ele_first = (function() {
         $select.each(function() {
