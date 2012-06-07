@@ -174,12 +174,12 @@ $(document).ready (dom) ->
 			.change ->
 				select_css = $('option:selected', @).attr 'class'
 				val = $('option:selected', @).text()
-				$(@).siblings('span.select').html val
-				if select_css
-					$(@).siblings('span.select').html val 
-				else if not select_css or select_css is 'undefined'
-					$(@).siblings('span.select').removeClass 'submitted'
-				$(@).attr 'title', val
+				$(@).next('span.select').text val
+				if select_css is 'submitted'
+					$(@).next('span.select').addClass 'submitted'
+				else
+					$(@).next('span.select').removeClass 'submitted'
+				$(@).attr('title',val)
 				return
 			.next('span.select').css
 				position: 'absolute'

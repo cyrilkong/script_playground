@@ -184,11 +184,11 @@
           var select_css, val;
           select_css = $('option:selected', this).attr('class');
           val = $('option:selected', this).text();
-          $(this).siblings('span.select').html(val);
-          if (select_css) {
-            $(this).siblings('span.select').html(val);
-          } else if (!select_css || select_css === 'undefined') {
-            $(this).siblings('span.select').removeClass('submitted');
+          $(this).next('span.select').text(val);
+          if (select_css === 'submitted') {
+            $(this).next('span.select').addClass('submitted');
+          } else {
+            $(this).next('span.select').removeClass('submitted');
           }
           $(this).attr('title', val);
         }).next('span.select').css({
