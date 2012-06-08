@@ -73,20 +73,35 @@ $(document).ready (dom) ->
 				$(@).val('').addClass options.placeholderClass
 
 				# placeholder password holder
-				pw_holder.click ->
-					pw_holder.hide()
-					$(@).prev('input[type="password"]').focus().addClass('typing').removeClass options.placeholderClass
-					return
-				$(@).focusin ->
-					if $(@).hasClass options.placeholderClass
-						pw_holder.hide()
-						$(@).removeClass options.placeholderClass
-					return
-				$(@).focusout ->
-					if $(@).val() is ''
-						pw_holder.show()
-						$(@).val('').addClass options.placeholderClass
-					return
+				# pw_holder.click ->
+				# 	pw_holder.hide()
+				# 	$(@).prev('input[type="password"]').focus().addClass('typing').removeClass options.placeholderClass
+				# 	return
+				# $(@).focusin ->
+				# 	if $(@).hasClass options.placeholderClass
+				# 		pw_holder.hide()
+				# 		$(@).removeClass options.placeholderClass
+				# 	return
+				# $(@).focusout ->
+				# 	if $(@).val() is ''
+				# 		pw_holder.show()
+				# 		$(@).val('').addClass options.placeholderClass
+				# 	return
+				pw_holder.on
+					click: ->
+						$(@).prev('input[type="password"]').focus().addClass('typing').removeClass options.placeholderClass
+						return
+				$(@).on
+					focusin: ->
+						if $(@).hasClass options.placeholderClass
+							pw_holder.hide()
+							$(@).removeClass options.placeholderClass
+						return
+					focusout: ->
+						if $(@).val() is ''
+							pw_holder.show()
+							$(@).val('').addClass options.placeholderClass
+						return
 
 			# placeholder for input type text
 			if $(@).attr('type') isnt 'password'
@@ -95,21 +110,37 @@ $(document).ready (dom) ->
 					color: '#6D6D6D'
 					fontFamily: '"Segoe UI", sans-serif'
 					fontSize: $(@).css 'font-size'
-				$(@).focusin ->
-					$(@).css 'color', '#000'
-					$(@).removeClass options.placeholderClass
-					$(@).val('').removeClass options.placeholderClass if $(@).val() is placeholder_val
-					return
-				$(@).focusout ->
-					if $(@).val() is placeholder_val
-						$(@).css 'color', '#6D6D6D'
-						$(@).addClass options.placeholderClass
-					else if $(@).val() is ''
-						$(@).val(placeholder_val).removeClass options.placeholderClass
-						$(@).css 'color', '#6D6D6D'
-					else
-						$(@).css 'color', '#000' 
-					return
+				# $(@).focusin ->
+				# 	$(@).css 'color', '#222'
+				# 	$(@).removeClass options.placeholderClass
+				# 	$(@).val('').removeClass options.placeholderClass if $(@).val() is placeholder_val
+				# 	return
+				# $(@).focusout ->
+				# 	if $(@).val() is placeholder_val
+				# 		$(@).css 'color', '#6D6D6D'
+				# 		$(@).addClass options.placeholderClass
+				# 	else if $(@).val() is ''
+				# 		$(@).val(placeholder_val).removeClass options.placeholderClass
+				# 		$(@).css 'color', '#6D6D6D'
+				# 	else
+				# 		$(@).css 'color', '#222' 
+				# 	return
+				$(@).on
+					focusin: ->
+						$(@).css 'color', '#222'
+						$(@).removeClass options.placeholderClass
+						$(@).val('').removeClass options.placeholderClass if $(@).val() is placeholder_val
+						return
+					focusout: ->
+						if $(@).val() is placeholder_val
+							$(@).css 'color', '#6D6D6D'
+							$(@).addClass options.placeholderClass
+						else if $(@).val() is ''
+							$(@).val(placeholder_val).removeClass options.placeholderClass
+							$(@).css 'color', '#6D6D6D'
+						else
+							$(@).css 'color', '#222' 
+						return
 
 			# placeholder for input end, form submit handler
 			$(@).parents('form').submit ->
@@ -125,15 +156,26 @@ $(document).ready (dom) ->
 	# placeholder_init()
 	placeholder_init = do ->
 		return false if not dom.find('input').length
+		# $('input.placeholder, input[placeholder]').each ->
+		# 	$input = $(@)
+		# 	$input.focusin ->
+		# 		$(@).addClass 'typing'
+		# 		return
+		# 	$input.focusout ->
+		# 		$(@).removeClass 'typing'
+		# 		return
+		# 	return
+		# .placeholder()
 		$('input.placeholder, input[placeholder]').each ->
-			$input = $(@)
-			$input.focusin ->
-				$(@).addClass 'typing'
-				return
-			$input.focusout ->
-				$(@).removeClass 'typing'
-				return
-		.placeholder()
+			$(@).on
+				focusin: ->
+					$(@).addClass 'typing'
+					return
+				focusout: ->
+					$(@).removeClass 'typing'
+					return
+			.placeholder()
+			return
 		return
 	# placeholder_init() end
 

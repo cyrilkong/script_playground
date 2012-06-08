@@ -75,20 +75,23 @@
             }
           }).insertAfter(this);
           $(this).val('').addClass(options.placeholderClass);
-          pw_holder.click(function() {
-            pw_holder.hide();
-            $(this).prev('input[type="password"]').focus().addClass('typing').removeClass(options.placeholderClass);
-          });
-          $(this).focusin(function() {
-            if ($(this).hasClass(options.placeholderClass)) {
-              pw_holder.hide();
-              $(this).removeClass(options.placeholderClass);
+          pw_holder.on({
+            click: function() {
+              $(this).prev('input[type="password"]').focus().addClass('typing').removeClass(options.placeholderClass);
             }
           });
-          $(this).focusout(function() {
-            if ($(this).val() === '') {
-              pw_holder.show();
-              $(this).val('').addClass(options.placeholderClass);
+          $(this).on({
+            focusin: function() {
+              if ($(this).hasClass(options.placeholderClass)) {
+                pw_holder.hide();
+                $(this).removeClass(options.placeholderClass);
+              }
+            },
+            focusout: function() {
+              if ($(this).val() === '') {
+                pw_holder.show();
+                $(this).val('').addClass(options.placeholderClass);
+              }
             }
           });
         }
@@ -99,22 +102,24 @@
             fontFamily: '"Segoe UI", sans-serif',
             fontSize: $(this).css('font-size')
           });
-          $(this).focusin(function() {
-            $(this).css('color', '#000');
-            $(this).removeClass(options.placeholderClass);
-            if ($(this).val() === placeholder_val) {
-              $(this).val('').removeClass(options.placeholderClass);
-            }
-          });
-          $(this).focusout(function() {
-            if ($(this).val() === placeholder_val) {
-              $(this).css('color', '#6D6D6D');
-              $(this).addClass(options.placeholderClass);
-            } else if ($(this).val() === '') {
-              $(this).val(placeholder_val).removeClass(options.placeholderClass);
-              $(this).css('color', '#6D6D6D');
-            } else {
-              $(this).css('color', '#000');
+          $(this).on({
+            focusin: function() {
+              $(this).css('color', '#222');
+              $(this).removeClass(options.placeholderClass);
+              if ($(this).val() === placeholder_val) {
+                $(this).val('').removeClass(options.placeholderClass);
+              }
+            },
+            focusout: function() {
+              if ($(this).val() === placeholder_val) {
+                $(this).css('color', '#6D6D6D');
+                $(this).addClass(options.placeholderClass);
+              } else if ($(this).val() === '') {
+                $(this).val(placeholder_val).removeClass(options.placeholderClass);
+                $(this).css('color', '#6D6D6D');
+              } else {
+                $(this).css('color', '#222');
+              }
             }
           });
         }
@@ -134,15 +139,15 @@
         return false;
       }
       $('input.placeholder, input[placeholder]').each(function() {
-        var $input;
-        $input = $(this);
-        $input.focusin(function() {
-          $(this).addClass('typing');
-        });
-        return $input.focusout(function() {
-          $(this).removeClass('typing');
-        });
-      }).placeholder();
+        $(this).on({
+          focusin: function() {
+            $(this).addClass('typing');
+          },
+          focusout: function() {
+            $(this).removeClass('typing');
+          }
+        }).placeholder();
+      });
     })();
     external_link_Fx = (function() {
       $('a[rel="external"]').each(function() {
