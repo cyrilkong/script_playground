@@ -8,6 +8,7 @@ util = require 'util'
 javascripts =
     'public/javascripts/global.js' : [
         'src/coffee/global.coffee'
+        'src/coffee/basic.coffee'
     ]
 
 Array::unique = ->
@@ -54,13 +55,15 @@ task 'cook', 'build form sources', build = (cb) ->
 task 'eat', 'watch src files and build them', ->
     invoke 'cook'
     console.log 'Watching in src'
-    for file in source_files()
-        ((file) ->
-            fs.watchFile "#{file}", (curr, prev) ->
-                if +curr.mtime isnt +prev.mtime
-                    console.log "Modify detected in #{file}"
-                    invoke 'cook'
-        )(file)
+    for javascript, sources of javascripts
+        for source in sources
+            file_name = source
+            ((file_name) ->
+                fs.watchFile file_name, (curr, prev) ->
+                    if +curr.mtime isnt +prev.mtime
+                        console.log "Modify detected in #{file_name}"
+                        invoke 'cook'
+            )(file_name)
 
 print_error = (error, file_name, file_contents) ->
     line = error.message.match /line ([0-9]+):/
