@@ -33,8 +33,7 @@ write_javascripts = (filename, body, trailing='') ->
     #{body}#{trailing}
     """
     console.log """
-    #   compiled:   #{filename}
-    #
+    *   compiled:   #{filename}
     """
 
 task 'cook', 'build form sources', build = (cb) ->
@@ -57,8 +56,13 @@ task 'cook', 'build form sources', build = (cb) ->
 
 task 'eat', 'watch src files and build them', ->
     console.log """
-    Watching in src/coffee/
-    =======================
+
+    # # # # # # # # # # # # # # # # # # # # # # # # # #
+    #                                                 #
+    #            ===== cake eating =====              #
+    #                                                 #
+    # # # # # # # # # # # # # # # # # # # # # # # # # #
+    
     """
     invoke 'cook'
     for file in source_files()
@@ -67,8 +71,9 @@ task 'eat', 'watch src files and build them', ->
             fs.watchFile src, (curr, prev) ->
                 if +curr.mtime isnt +prev.mtime
                     console.log """
-                    #   modified:   #{src}
-                    #
+
+                    !   modified:   #{src}
+
                     """
                     invoke 'cook'
             )
@@ -81,9 +86,9 @@ print_error = (error, file_name, file_contents) ->
         first = if line-4 < 0 then 0 else line-4
         last = if line+3 > contents_lines.size then contents_lines.size else line+3
         console.log """
-        #   error  :   #{file_name}
-        #   message:   #{error.message}
-        #
+            error  :   #{file_name}
+            message:   #{error.message}
+         
         """
         index = 0
         for line in contents_lines[first...last]
@@ -92,7 +97,7 @@ print_error = (error, file_name, file_contents) ->
             console.log "#{(' ' for [0..(3-(line_number.toString().length))]).join('')} #{line}"
     else
         console.log """
-        #   error  :   #{file_name}
-        #   message:   #{error.message}
-        #
+            error  :   #{file_name}
+            message:   #{error.message}
+         
         """
