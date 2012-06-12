@@ -6,7 +6,7 @@ util = require 'util'
 {parser, uglify} = require 'uglify-js'
 
 javascripts =
-    'public/javascripts/global.js' : [
+    'public/javascripts/main.js' : [
         'src/coffee/global.coffee'
         'src/coffee/basic.coffee'
     ]
