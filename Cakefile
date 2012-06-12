@@ -7,8 +7,8 @@ util = require 'util'
 
 javascripts =
     'public/javascripts/main.js' : [
-        'src/coffee/global.coffee'
         'src/coffee/basic.coffee'
+        'src/coffee/global.coffee'
     ]
 
 Array::unique = ->
@@ -28,11 +28,14 @@ version = ->
 
 write_javascripts = (filename, body, trailing='') ->
     fs.writeFileSync filename, """
-    // compiled globaljs VERSION #{version()}, author is Cyril Kong
+    // compiled mainjs VERSION #{version()}, author is Cyril Kong
     // powered by cake + coffee.
     #{body}#{trailing}
     """
-    console.log "Generated #{filename}"
+    console.log """
+    #   compiled:   #{filename}
+    #
+    """
 
 task 'cook', 'build form sources', build = (cb) ->
     file_name = null
@@ -53,17 +56,23 @@ task 'cook', 'build form sources', build = (cb) ->
         print_error e, file_name, file_contents
 
 task 'eat', 'watch src files and build them', ->
+    console.log """
+    Watching in src/coffee/
+    =======================
+    """
     invoke 'cook'
-    console.log 'Watching in src'
-    for javascript, sources of javascripts
-        for source in sources
-            file_name = source
-            ((file_name) ->
-                fs.watchFile file_name, (curr, prev) ->
-                    if +curr.mtime isnt +prev.mtime
-                        console.log "Modify detected in #{file_name}"
-                        invoke 'cook'
-            )(file_name)
+    for file in source_files()
+        for src in file
+            ((file) ->
+            fs.watchFile src, (curr, prev) ->
+                if +curr.mtime isnt +prev.mtime
+                    console.log """
+                    #   modified:   #{src}
+                    #
+                    """
+                    invoke 'cook'
+            )
+
 
 print_error = (error, file_name, file_contents) ->
     line = error.message.match /line ([0-9]+):/
@@ -72,8 +81,9 @@ print_error = (error, file_name, file_contents) ->
         first = if line-4 < 0 then 0 else line-4
         last = if line+3 > contents_lines.size then contents_lines.size else line+3
         console.log """
-        Error compiling #{file_name}:
-        #{error.message}
+        #   error  :   #{file_name}
+        #   message:   #{error.message}
+        #
         """
         index = 0
         for line in contents_lines[first...last]
@@ -82,6 +92,7 @@ print_error = (error, file_name, file_contents) ->
             console.log "#{(' ' for [0..(3-(line_number.toString().length))]).join('')} #{line}"
     else
         console.log """
-        Error compiling #{file_name}:
-        #{error.message}
+        #   error  :   #{file_name}
+        #   message:   #{error.message}
+        #
         """
