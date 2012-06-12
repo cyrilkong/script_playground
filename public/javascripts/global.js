@@ -2,17 +2,32 @@
 // powered by cake + coffee.
 (function() {
 
+  $(document).ready(function(dom) {});
+
+}).call(this);
+(function() {
+  var deviceAgent, docBody, isFirefox, isIE, isIE7, isIE8, isMobile, isSafari, isWebkit;
+
+  isFirefox = $.browser.mozilla;
+
+  isSafari = $.browser.safari;
+
+  isWebkit = $.browser.webkit;
+
+  docBody = isWebkit ? 'body' : 'html';
+
+  isIE = $.browser.msie;
+
+  isIE7 = $.browser.msie && $.browser.version === 7.0;
+
+  isIE8 = $.browser.msie && $.browser.version === 8.0;
+
+  deviceAgent = navigator.userAgent.toLowerCase();
+
+  isMobile = deviceAgent.match(/(iphone|ipod|ipad|android)/ !== null);
+
   $(document).ready(function(dom) {
-    var deviceAgent, docBody, external_link_Fx, isFirefox, isIE, isIE7, isIE8, isMobile, isSafari, isWebkit, placeholder_init, styled_select_Fx;
-    isFirefox = $.browser.mozilla;
-    isSafari = $.browser.safari;
-    isWebkit = $.browser.webkit;
-    docBody = isWebkit ? 'body' : 'html';
-    isIE = $.browser.msie;
-    isIE7 = $.browser.msie && $.browser.version === 7.0;
-    isIE8 = $.browser.msie && $.browser.version === 8.0;
-    deviceAgent = navigator.userAgent.toLowerCase();
-    isMobile = deviceAgent.match(/(iphone|ipod|ipad|android)/ !== null);
+    var external_link_Fx, placeholder_init, styled_select_Fx;
     $.fn.eqHeight = function(minH, maxH) {
       var tallest;
       tallest = minH ? maxH : 0;
