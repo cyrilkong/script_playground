@@ -43,7 +43,7 @@ task 'cook', 'build form sources', build = (cb) ->
             for source in sources
                 file_name = source
                 file_contents = "#{fs.readFileSync source}"
-                code += Coffees.compile file_contents
+                code += Coffees.compile file_contents, { bare: true }
             write_javascripts javascript, code
             unless process.env.MINIFY is 'false'
                 write_javascripts javascript.replace(/\.js$/, '.min.js'), (
