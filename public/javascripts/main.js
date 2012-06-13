@@ -1,24 +1,26 @@
 // compiled mainjs VERSION 1.0, author is Cyril Kong
 // powered by cake + coffee.
-var deviceAgent, docBody, isFirefox, isIE, isIE7, isIE8, isMobile, isSafari, isWebkit, jquery_latest;
+var deviceAgent, docBody, isFirefox, isIE, isIE7, isIE8, isMobile, isSafari, isWebkit;
 
-if (typeof jQuery === 'undefined') {
-  jquery_latest = document.createElement('script');
-  jquery_latest.src = 'http://code.jquery.com/jquery-latest.min.js';
-  jquery_latest.type = 'text/javascript';
-  document.getElementsByTagName('head')[0].appendChild(jquery_latest);
-} else {
-  console.log('jQuery is loaded, global variable are\nisFirefox, isSafari, isWebkit, docBody, isIE, isIE7, isIE8, isMobile');
-  isFirefox = $.browser.mozilla;
-  isSafari = $.browser.safari;
-  isWebkit = $.browser.webkit;
-  docBody = isWebkit ? 'body' : 'html';
-  isIE = $.browser.msie;
-  isIE7 = $.browser.msie && $.browser.version === 7.0;
-  isIE8 = $.browser.msie && $.browser.version === 8.0;
-  deviceAgent = navigator.userAgent.toLowerCase();
-  isMobile = deviceAgent.match(/(iphone|ipod|ipad|android)/ !== null);
-}
+console.log("jQuery is loaded, global variable are\nisFirefox, isSafari, isWebkit, docBody, isIE, isIE7, isIE8, isMobile");
+
+isFirefox = $.browser.mozilla;
+
+isSafari = $.browser.safari;
+
+isWebkit = $.browser.webkit;
+
+docBody = isWebkit ? 'body' : 'html';
+
+isIE = $.browser.msie;
+
+isIE7 = $.browser.msie && $.browser.version === 7.0;
+
+isIE8 = $.browser.msie && $.browser.version === 8.0;
+
+deviceAgent = navigator.userAgent.toLowerCase();
+
+isMobile = deviceAgent.match(/(iphone|ipod|ipad|android)/ !== null);
 
 $(document).ready(function(dom) {
   var external_link_Fx, placeholder_init, styled_select_Fx;
