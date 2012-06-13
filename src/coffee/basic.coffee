@@ -1,24 +1,18 @@
-if typeof jQuery is 'undefined'
-    jquery_latest = document.createElement('script')
-    jquery_latest.src = 'http://code.jquery.com/jquery-latest.min.js'
-    jquery_latest.type = 'text/javascript'
-    document.getElementsByTagName('head')[0].appendChild(jquery_latest)
-else
-    console.log '''
-    jQuery is loaded, global variable are
-    isFirefox, isSafari, isWebkit, docBody, isIE, isIE7, isIE8, isMobile
-    '''
+console.log """
+jQuery is loaded, global variable are
+isFirefox, isSafari, isWebkit, docBody, isIE, isIE7, isIE8, isMobile
+"""
 
-    # device/browser detection
-    isFirefox = $.browser.mozilla
-    isSafari = $.browser.safari
-    isWebkit = $.browser.webkit
-    docBody = if isWebkit then 'body' else 'html'
-    isIE = $.browser.msie
-    isIE7 = $.browser.msie and $.browser.version is 7.0
-    isIE8 = $.browser.msie and $.browser.version is 8.0
-    deviceAgent = navigator.userAgent.toLowerCase()
-    isMobile = deviceAgent.match /(iphone|ipod|ipad|android)/ isnt null
+# device/browser detection
+isFirefox = $.browser.mozilla
+isSafari = $.browser.safari
+isWebkit = $.browser.webkit
+docBody = if isWebkit then 'body' else 'html'
+isIE = $.browser.msie
+isIE7 = $.browser.msie and $.browser.version is 7.0
+isIE8 = $.browser.msie and $.browser.version is 8.0
+deviceAgent = navigator.userAgent.toLowerCase()
+isMobile = deviceAgent.match /(iphone|ipod|ipad|android)/ isnt null
 
 # dom ready()
 $(document).ready (dom) ->
