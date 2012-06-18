@@ -11,6 +11,9 @@ javascripts =
         'src/coffee/global.coffee'
     ]
 
+lessdir = 'src/less'
+cssdir = 'public/stylesheets'
+
 Array::unique = ->
     output = {}
     output[@[key]] = @[key] for key in [0...@length]
@@ -77,6 +80,23 @@ task 'eat', 'watch src files and build them', ->
                     """
                     invoke 'cook'
             )
+    lessComp = fs.readdir("#{lessdir}", (err, files) ->
+        for file in files
+            fn = ((file) ->
+                parts = file.split('.', 1)
+                if (/(.*)\.(less)/i.test(file))
+                    compileLess(parts[0])
+                    fileRef = file
+                    fs.watchFile "#{lessdir}/#{file}", (curr, prev) ->
+                        if +curr.mtime isnt +prev.mtime
+                            console.log """
+
+                            !   modified:   #{file}.less
+
+                            """ 
+                            compileLess(parts[0])
+            )(file)
+    )
 
 
 print_error = (error, file_name, file_contents) ->
@@ -101,3 +121,9 @@ print_error = (error, file_name, file_contents) ->
             message:   #{error.message}
          
         """
+
+compileLess = (file) ->
+    exec "lessc #{lessdir}/#{file}.less #{cssdir}/#{file}.css"
+    console.log """
+    *   compiled:   #{file}.css
+    """
