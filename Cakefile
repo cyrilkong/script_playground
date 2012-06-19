@@ -91,7 +91,7 @@ task 'eat', 'watch src files and build them', ->
                         if +curr.mtime isnt +prev.mtime
                             console.log """
 
-                            !   modified:   #{file}.less
+                            !   modified:   #{file}
 
                             """ 
                             compileLess(parts[0])
