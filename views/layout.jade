@@ -11,20 +11,3 @@ html
     body
         block content
         block footer
-        script
-            head.ready(function() {
-                function form_test(event) {
-                    var data = $('#form_testing').serialize();
-                    data = decodeURIComponent(data);
-                    console.log(data);
-                    return data;
-                }
-                
-                //- console.log('jQuery ready');
-                $('#form_testing').submit(function(event) {
-                    event.preventDefault();
-                    form_test();
-                    
-                });
-            
-            })

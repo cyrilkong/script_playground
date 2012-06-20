@@ -106,8 +106,8 @@ print_error = (error, file_name, file_contents) ->
         first = if line-4 < 0 then 0 else line-4
         last = if line+3 > contents_lines.size then contents_lines.size else line+3
         console.log """
-            error  :   #{file_name}
-            message:   #{error.message}
+            error   :   #{file_name}
+            message :   #{error.message}
          
         """
         index = 0
@@ -117,8 +117,8 @@ print_error = (error, file_name, file_contents) ->
             console.log "#{(' ' for [0..(3-(line_number.toString().length))]).join('')} #{line}"
     else
         console.log """
-            error  :   #{file_name}
-            message:   #{error.message}
+            error   :   #{file_name}
+            message :   #{error.message}
          
         """
 

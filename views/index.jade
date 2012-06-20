@@ -27,7 +27,13 @@ block content
 				input#btn_submit(type="submit", name="submit", value="submit")
 		fieldset
 			legend Testing columns
-			div.main
+			div.main(style="height:1000px;position:relative;")
+				div#floating(style="position:absolute;right:300px;margin:0;")
+					ul.list
+						li something floating
+						li something floating
+						li something floating
+						li something floating
 				div.comeone
 					p column1
 				div.comeone
@@ -36,5 +42,6 @@ block content
 					p column3
 				div.comeone
 					p column4
+
 block footer
 	footer copyright &copy; 2012
