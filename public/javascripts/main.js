@@ -207,7 +207,9 @@ styled_select_Fx = (function() {
       }
     }
     h = $(this).height();
-    w = $(this).width();
+    if ($(this).is(':visible')) {
+      w = $(this).width();
+    }
     $(this).css({
       position: 'relative',
       'z-index': 10,
