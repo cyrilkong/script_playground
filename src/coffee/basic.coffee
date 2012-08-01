@@ -186,7 +186,7 @@ styled_select_Fx = do ->
             select_title = $('option:selected', @).text()
             if isIE8 then $(@).width 'auto' else $(@).width $(@).width() + 20
         h = $(@).height()
-        w = $(@).width()
+        w = $(@).width() if $(@).is ':visible'
         $(@).css
             position: 'relative'
             'z-index': 10
